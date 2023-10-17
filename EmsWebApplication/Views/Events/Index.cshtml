@@ -1,0 +1,73 @@
+﻿@model IEnumerable<EmsWebApplication.Models.Event>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="card-container">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <h3>@item.EventName</h3>
+            <p><strong>Date:</strong> @item.EventDate.ToString("dddd, MMMM d, yyyy")</p>
+            <p><strong>Venue:</strong> @item.EventVenue</p>
+            <p><strong>Description:</strong> @item.EventDescription</p>
+            <p>
+                <strong>Price:</strong> $@item.EventPrice
+                @if (item.EventPromoDateStart <= DateTime.Now && item.EventPromoDateEnd >= DateTime.Now)
+                {
+                    <text><br /><strong>Discounted Price:</strong> $@(item.EventPrice * 0.8)</text>
+                }
+            </p>
+            <p>
+                <strong>Promotion:</strong> @{
+                    if (item.EventPromoDateStart <= DateTime.Now && item.EventPromoDateEnd >= DateTime.Now)
+                    {
+                        @Html.Raw("20% Discount");
+                    }
+                    else
+                    {
+                        @Html.Raw("No promotion active");
+                    }
+                }
+            </p>
+            <a href="@Url.Action("Details", "EventsController", new { id = item.Id })" class="button">Buy Tickets</a>
+        </div>
+    }
+</div>
+
+<style>
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 10px;
+        width: 300px;
+        background-color: #f9f9f9;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        margin-top: 10px;
+        border-radius: 4px;
+    }
+</style>
