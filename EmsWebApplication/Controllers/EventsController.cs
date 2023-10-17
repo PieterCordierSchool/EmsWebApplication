@@ -13,6 +13,8 @@ namespace EmsWebApplication.Controllers
     public class EventsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private const int initialTicketCount = 1; // Set your initial ticket count here
+
 
         // GET: Events
         public ActionResult Index()
@@ -52,11 +54,39 @@ namespace EmsWebApplication.Controllers
             {
                 db.Events.Add(@event);
                 db.SaveChanges();
+
+                // Create tickets for the newly created event
+                CreateTicketsForEvent(@event.Id);
+
                 return RedirectToAction("Index");
             }
 
             return View(@event);
         }
+
+        // Method to create tickets for the event
+        private void CreateTicketsForEvent(int eventId)
+        {
+            // Fetch the event for which tickets need to be created
+            var createdEvent = db.Events.Find(eventId);
+
+            // Create tickets based on the event
+            var newTickets = new List<Ticket>();
+            for (int i = 0; i < initialTicketCount; i++) // Set the count of tickets to be created for each event
+            {
+                var newTicket = new Ticket
+                {
+                    EventId = createdEvent.Id,
+                    // Set other properties as needed
+                };
+                newTickets.Add(newTicket);
+            }
+
+            // Save the newly created tickets
+            db.Tickets.AddRange(newTickets);
+            db.SaveChanges();
+        }
+
 
         // GET: Events/Edit/5
         public ActionResult Edit(int? id)

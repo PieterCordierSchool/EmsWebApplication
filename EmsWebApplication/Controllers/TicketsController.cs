@@ -128,5 +128,11 @@ namespace EmsWebApplication.Controllers
             }
             base.Dispose(disposing);
         }
+        public ActionResult GetEventInfo(int eventId)
+        {
+            var selectedEvent = db.Events.Find(eventId);
+            return PartialView("_EventInfoPartial", selectedEvent);
+        }
     }
+
 }
