@@ -66,20 +66,32 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
-        <EntityType Name="Event">
+        <EntityType Name="Events">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EventName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="EventName" Type="nvarchar(max)" />
           <Property Name="EventDate" Type="datetime" Nullable="false" />
-          <Property Name="EventVenue" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="EventDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="EventVenue" Type="nvarchar(max)" />
+          <Property Name="EventDescription" Type="nvarchar(max)" />
           <Property Name="EventPrice" Type="int" Nullable="false" />
           <Property Name="EventPromoDateStart" Type="datetime" Nullable="false" />
           <Property Name="EventPromoDateEnd" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="Review">
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="GroupSize" Type="int" />
+          <Property Name="DiscountPercentage" Type="int" />
+          <Property Name="Coupon" Type="nvarchar" MaxLength="50" />
+          <Property Name="PromotionDiscount" Type="int" />
+          <Property Name="Total" Type="int" />
+          <Property Name="TotalAfterDiscount" Type="int" />
+        </EntityType>
+        <EntityType Name="Reviews">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -87,28 +99,60 @@
           <Property Name="UserReview" Type="nvarchar(max)" />
           <Property Name="Rating" Type="int" />
         </EntityType>
-        <EntityType Name="Ticket">
+        <EntityType Name="ShoppingCartItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="EventId" Type="int" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Tickets">
           <Key>
             <PropertyRef Name="TicketId" />
           </Key>
           <Property Name="TicketId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventId" Type="int" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserId" Type="nvarchar(max)" />
           <Property Name="PurchaseDate" Type="datetime" />
           <Property Name="Quantity" Type="int" />
-          <Property Name="OriginalPrice" Type="decimal" Precision="10" Scale="2" />
-          <Property Name="Discount" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="TicketSales">
+          <Key>
+            <PropertyRef Name="TicketSaleId" />
+          </Key>
+          <Property Name="TicketSaleId" Type="int" Nullable="false" />
+          <Property Name="TicketId" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="PurchaseDate" Type="datetime" />
+          <Property Name="Quantity" Type="int" />
           <Property Name="TotalPrice" Type="decimal" Precision="10" Scale="2" />
         </EntityType>
-        <Association Name="FK__Ticket__EventId__60A75C0F">
-          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
-          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+        <Association Name="FK__ShoppingC__Event__2BFE89A6">
+          <End Role="Events" Type="Self.Events" Multiplicity="0..1" />
+          <End Role="ShoppingCartItem" Type="Self.ShoppingCartItem" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Event">
+            <Principal Role="Events">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Ticket">
+            <Dependent Role="ShoppingCartItem">
               <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketSal__Ticke__1EA48E88">
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="0..1" />
+          <End Role="TicketSales" Type="Self.TicketSales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tickets">
+              <PropertyRef Name="TicketId" />
+            </Principal>
+            <Dependent Role="TicketSales">
+              <PropertyRef Name="TicketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -168,6 +212,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_dbo_Tickets_dbo_Events_EventId">
+          <End Role="Events" Type="Self.Events" Multiplicity="0..1" />
+          <End Role="Tickets" Type="Self.Tickets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Events">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="EmsWebApplicationDbModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -175,12 +231,19 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Ticket" EntityType="Self.Ticket" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Ticket__EventId__60A75C0F" Association="Self.FK__Ticket__EventId__60A75C0F">
-            <End Role="Event" EntitySet="Event" />
-            <End Role="Ticket" EntitySet="Ticket" />
+          <EntitySet Name="Events" EntityType="Self.Events" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShoppingCartItem" EntityType="Self.ShoppingCartItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketSales" EntityType="Self.TicketSales" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ShoppingC__Event__2BFE89A6" Association="Self.FK__ShoppingC__Event__2BFE89A6">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="ShoppingCartItem" EntitySet="ShoppingCartItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketSal__Ticke__1EA48E88" Association="Self.FK__TicketSal__Ticke__1EA48E88">
+            <End Role="Tickets" EntitySet="Tickets" />
+            <End Role="TicketSales" EntitySet="TicketSales" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -197,6 +260,10 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Tickets_dbo_Events_EventId" Association="Self.FK_dbo_Tickets_dbo_Events_EventId">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Tickets" EntitySet="Tickets" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -268,14 +335,27 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EventName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EventDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EventVenue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EventDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EventVenue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EventDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EventPrice" Type="Int32" Nullable="false" />
           <Property Name="EventPromoDateStart" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EventPromoDateEnd" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Tickets" Relationship="Self.FK__Ticket__EventId__60A75C0F" FromRole="Event" ToRole="Ticket" />
+          <NavigationProperty Name="ShoppingCartItems" Relationship="Self.FK__ShoppingC__Event__2BFE89A6" FromRole="Events" ToRole="ShoppingCartItem" />
+          <NavigationProperty Name="Tickets" Relationship="Self.FK_dbo_Tickets_dbo_Events_EventId" FromRole="Events" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="GroupSize" Type="Int32" />
+          <Property Name="DiscountPercentage" Type="Int32" />
+          <Property Name="Coupon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PromotionDiscount" Type="Int32" />
+          <Property Name="Total" Type="Int32" />
+          <Property Name="TotalAfterDiscount" Type="Int32" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -285,19 +365,42 @@
           <Property Name="UserReview" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Rating" Type="Int32" />
         </EntityType>
+        <EntityType Name="ShoppingCartItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="EventId" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Event" Relationship="Self.FK__ShoppingC__Event__2BFE89A6" FromRole="ShoppingCartItem" ToRole="Events" />
+        </EntityType>
         <EntityType Name="Ticket">
           <Key>
             <PropertyRef Name="TicketId" />
           </Key>
           <Property Name="TicketId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EventId" Type="Int32" />
-          <Property Name="UserId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PurchaseDate" Type="DateTime" Precision="3" />
           <Property Name="Quantity" Type="Int32" />
-          <Property Name="OriginalPrice" Type="Decimal" Precision="10" Scale="2" />
-          <Property Name="Discount" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Discount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_dbo_Tickets_dbo_Events_EventId" FromRole="Tickets" ToRole="Events" />
+          <NavigationProperty Name="TicketSales" Relationship="Self.FK__TicketSal__Ticke__1EA48E88" FromRole="Tickets" ToRole="TicketSales" />
+        </EntityType>
+        <EntityType Name="TicketSale">
+          <Key>
+            <PropertyRef Name="TicketSaleId" />
+          </Key>
+          <Property Name="TicketSaleId" Type="Int32" Nullable="false" />
+          <Property Name="TicketId" Type="Int32" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="PurchaseDate" Type="DateTime" Precision="3" />
+          <Property Name="Quantity" Type="Int32" />
           <Property Name="TotalPrice" Type="Decimal" Precision="10" Scale="2" />
-          <NavigationProperty Name="Event" Relationship="Self.FK__Ticket__EventId__60A75C0F" FromRole="Ticket" ToRole="Event" />
+          <NavigationProperty Name="Ticket" Relationship="Self.FK__TicketSal__Ticke__1EA48E88" FromRole="TicketSales" ToRole="Tickets" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -327,15 +430,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Ticket__EventId__60A75C0F">
-          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
-          <End Role="Ticket" Type="Self.Ticket" Multiplicity="*" />
+        <Association Name="FK__ShoppingC__Event__2BFE89A6">
+          <End Role="Events" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="ShoppingCartItem" Type="Self.ShoppingCartItem" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Event">
+            <Principal Role="Events">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Ticket">
+            <Dependent Role="ShoppingCartItem">
               <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Tickets_dbo_Events_EventId">
+          <End Role="Events" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="Tickets" Type="Self.Ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Events">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TicketSal__Ticke__1EA48E88">
+          <End Role="Tickets" Type="Self.Ticket" Multiplicity="0..1" />
+          <End Role="TicketSales" Type="Self.TicketSale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tickets">
+              <PropertyRef Name="TicketId" />
+            </Principal>
+            <Dependent Role="TicketSales">
+              <PropertyRef Name="TicketId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -343,15 +470,18 @@
           <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="EmsWebApplicationDbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="EmsWebApplicationDb" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Events" EntityType="Self.Event" />
+          <EntitySet Name="Groups" EntityType="Self.Group" />
           <EntitySet Name="Reviews" EntityType="Self.Review" />
+          <EntitySet Name="ShoppingCartItems" EntityType="Self.ShoppingCartItem" />
           <EntitySet Name="Tickets" EntityType="Self.Ticket" />
+          <EntitySet Name="TicketSales" EntityType="Self.TicketSale" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -360,9 +490,17 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__Ticket__EventId__60A75C0F" Association="Self.FK__Ticket__EventId__60A75C0F">
-            <End Role="Event" EntitySet="Events" />
-            <End Role="Ticket" EntitySet="Tickets" />
+          <AssociationSet Name="FK__ShoppingC__Event__2BFE89A6" Association="Self.FK__ShoppingC__Event__2BFE89A6">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="ShoppingCartItem" EntitySet="ShoppingCartItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Tickets_dbo_Events_EventId" Association="Self.FK_dbo_Tickets_dbo_Events_EventId">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TicketSal__Ticke__1EA48E88" Association="Self.FK__TicketSal__Ticke__1EA48E88">
+            <End Role="Tickets" EntitySet="Tickets" />
+            <End Role="TicketSales" EntitySet="TicketSales" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -374,7 +512,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="EmsWebApplicationDbModelStoreContainer" CdmEntityContainer="EmsWebApplicationDbEntities">
+        <EntityContainerMapping StorageEntityContainer="EmsWebApplicationDbModelStoreContainer" CdmEntityContainer="EmsWebApplicationDb">
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="EmsWebApplicationDbModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -432,7 +570,7 @@
           </EntitySetMapping>
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="EmsWebApplicationDbModel.Event">
-              <MappingFragment StoreEntitySet="Event">
+              <MappingFragment StoreEntitySet="Events">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="EventName" ColumnName="EventName" />
                 <ScalarProperty Name="EventDate" ColumnName="EventDate" />
@@ -444,18 +582,41 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="EmsWebApplicationDbModel.Group">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
+                <ScalarProperty Name="DiscountPercentage" ColumnName="DiscountPercentage" />
+                <ScalarProperty Name="Coupon" ColumnName="Coupon" />
+                <ScalarProperty Name="PromotionDiscount" ColumnName="PromotionDiscount" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="TotalAfterDiscount" ColumnName="TotalAfterDiscount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Reviews">
             <EntityTypeMapping TypeName="EmsWebApplicationDbModel.Review">
-              <MappingFragment StoreEntitySet="Review">
+              <MappingFragment StoreEntitySet="Reviews">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserReview" ColumnName="UserReview" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ShoppingCartItems">
+            <EntityTypeMapping TypeName="EmsWebApplicationDbModel.ShoppingCartItem">
+              <MappingFragment StoreEntitySet="ShoppingCartItem">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Tickets">
             <EntityTypeMapping TypeName="EmsWebApplicationDbModel.Ticket">
-              <MappingFragment StoreEntitySet="Ticket">
+              <MappingFragment StoreEntitySet="Tickets">
                 <ScalarProperty Name="TicketId" ColumnName="TicketId" />
                 <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -463,6 +624,18 @@
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="OriginalPrice" ColumnName="OriginalPrice" />
                 <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketSales">
+            <EntityTypeMapping TypeName="EmsWebApplicationDbModel.TicketSale">
+              <MappingFragment StoreEntitySet="TicketSales">
+                <ScalarProperty Name="TicketSaleId" ColumnName="TicketSaleId" />
+                <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
               </MappingFragment>
             </EntityTypeMapping>
