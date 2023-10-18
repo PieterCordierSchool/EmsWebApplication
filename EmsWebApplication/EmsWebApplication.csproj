@@ -183,9 +183,9 @@
     <Compile Include="Migrations\202310171415501_InitialCreate.designer.cs">
       <DependentUpon>202310171415501_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202310180452392_Application_Migration.cs" />
-    <Compile Include="Migrations\202310180452392_Application_Migration.designer.cs">
-      <DependentUpon>202310180452392_Application_Migration.cs</DependentUpon>
+    <Compile Include="Migrations\202310180813382_ApplicationMigration.cs" />
+    <Compile Include="Migrations\202310180813382_ApplicationMigration.designer.cs">
+      <DependentUpon>202310180813382_ApplicationMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -205,6 +205,9 @@
       <DependentUpon>MyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Event.cs">
+      <DependentUpon>MyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Group.cs">
       <DependentUpon>MyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
@@ -375,8 +378,8 @@
     <EmbeddedResource Include="Migrations\202310171415501_InitialCreate.resx">
       <DependentUpon>202310171415501_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202310180452392_Application_Migration.resx">
-      <DependentUpon>202310180452392_Application_Migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202310180813382_ApplicationMigration.resx">
+      <DependentUpon>202310180813382_ApplicationMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

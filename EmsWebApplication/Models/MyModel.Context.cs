@@ -13,10 +13,10 @@ namespace EmsWebApplication.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EmsWebApplicationDbEntities3 : DbContext
+    public partial class EmsWebApplicationDbEntities5 : DbContext
     {
-        public EmsWebApplicationDbEntities3()
-            : base("name=EmsWebApplicationDbEntities3")
+        public EmsWebApplicationDbEntities5()
+            : base("name=EmsWebApplicationDbEntities5")
         {
         }
     
@@ -31,6 +31,7 @@ namespace EmsWebApplication.Models
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
     }
