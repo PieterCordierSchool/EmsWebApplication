@@ -35,5 +35,7 @@ namespace EmsWebApplication.Models
         public System.Data.Entity.DbSet<EmsWebApplication.Models.Review> Reviews { get; set; }
 
         public System.Data.Entity.DbSet<EmsWebApplication.Models.Ticket> Tickets { get; set; }
+
+
     }
 }

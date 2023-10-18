@@ -13,10 +13,10 @@ namespace EmsWebApplication.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EmsWebApplicationDbEntities : DbContext
+    public partial class EmsWebApplicationDbEntities3 : DbContext
     {
-        public EmsWebApplicationDbEntities()
-            : base("name=EmsWebApplicationDbEntities")
+        public EmsWebApplicationDbEntities3()
+            : base("name=EmsWebApplicationDbEntities3")
         {
         }
     

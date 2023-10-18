@@ -7,13 +7,13 @@ namespace EmsWebApplication.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class myMigration : IMigrationMetadata
+    public sealed partial class Application_Migration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(myMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Application_Migration));
         
         string IMigrationMetadata.Id
         {
-            get { return "202310171536318_myMigration"; }
+            get { return "202310180452392_Application_Migration"; }
         }
         
         string IMigrationMetadata.Source

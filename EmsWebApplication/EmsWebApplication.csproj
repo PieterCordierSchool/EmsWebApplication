@@ -183,9 +183,9 @@
     <Compile Include="Migrations\202310171415501_InitialCreate.designer.cs">
       <DependentUpon>202310171415501_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202310171536318_myMigration.cs" />
-    <Compile Include="Migrations\202310171536318_myMigration.designer.cs">
-      <DependentUpon>202310171536318_myMigration.cs</DependentUpon>
+    <Compile Include="Migrations\202310180452392_Application_Migration.cs" />
+    <Compile Include="Migrations\202310180452392_Application_Migration.designer.cs">
+      <DependentUpon>202310180452392_Application_Migration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -375,8 +375,8 @@
     <EmbeddedResource Include="Migrations\202310171415501_InitialCreate.resx">
       <DependentUpon>202310171415501_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202310171536318_myMigration.resx">
-      <DependentUpon>202310171536318_myMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202310180452392_Application_Migration.resx">
+      <DependentUpon>202310180452392_Application_Migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
