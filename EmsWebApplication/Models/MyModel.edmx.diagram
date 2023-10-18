@@ -4,23 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3b4b2bb84d2f468785bdbece8cf615a0" Name="Diagram1">
+      <Diagram DiagramId="ccf7dc66d8c446918371d2b0e600e90a" Name="Diagram1">
         <EntityTypeShape EntityType="EmsWebApplicationDbModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EmsWebApplicationDbModel.AspNetRole" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EmsWebApplicationDbModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="EmsWebApplicationDbModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EmsWebApplicationDbModel.AspNetUser" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmsWebApplicationDbModel.Event" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmsWebApplicationDbModel.Group" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmsWebApplicationDbModel.Review" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmsWebApplicationDbModel.ShoppingCartItem" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmsWebApplicationDbModel.Ticket" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="EmsWebApplicationDbModel.TicketSale" Width="1.5" PointX="5.25" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmsWebApplicationDbModel.Event" Width="1.5" PointX="0.75" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmsWebApplicationDbModel.Review" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EmsWebApplicationDbModel.Ticket" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
         <AssociationConnector Association="EmsWebApplicationDbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="EmsWebApplicationDbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="EmsWebApplicationDbModel.FK__ShoppingC__Event__2BFE89A6" ManuallyRouted="false" />
         <AssociationConnector Association="EmsWebApplicationDbModel.FK_dbo_Tickets_dbo_Events_EventId" ManuallyRouted="false" />
-        <AssociationConnector Association="EmsWebApplicationDbModel.FK__TicketSal__Ticke__1EA48E88" ManuallyRouted="false" />
         <AssociationConnector Association="EmsWebApplicationDbModel.AspNetUserRoles" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

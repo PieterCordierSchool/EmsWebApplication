@@ -17,7 +17,6 @@ namespace EmsWebApplication.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Event()
         {
-            this.ShoppingCartItems = new HashSet<ShoppingCartItem>();
             this.Tickets = new HashSet<Ticket>();
         }
     
@@ -30,8 +29,6 @@ namespace EmsWebApplication.Models
         public System.DateTime EventPromoDateStart { get; set; }
         public System.DateTime EventPromoDateEnd { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ticket> Tickets { get; set; }
     }

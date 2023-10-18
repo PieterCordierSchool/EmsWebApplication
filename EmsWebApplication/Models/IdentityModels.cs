@@ -36,8 +36,6 @@ namespace EmsWebApplication.Models
 
         public System.Data.Entity.DbSet<EmsWebApplication.Models.Ticket> Tickets { get; set; }
 
-        public System.Data.Entity.DbSet<EmsWebApplication.Models.TicketSale> TicketSales { get; set; }
 
-        public System.Data.Entity.DbSet<EmsWebApplication.Models.Group> Groups { get; set; }
     }
 }
