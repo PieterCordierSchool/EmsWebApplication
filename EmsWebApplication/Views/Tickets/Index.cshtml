@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<EmsWebApplication.Models.Ticket>
-
 @{
     ViewBag.Title = "Index";
 }
@@ -10,72 +9,44 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<select id="eventDropdown" onchange="displayEventInfo()">
-    <option value="">Select an event</option>
-    @foreach (var item in Model)
-    {
-        <option value="@item.EventId">@item.Event.EventName</option>
-    }
-</select>
+@foreach (var item in Model)
+{
+    <div class="ticket">
+        <h3>@item.Event.EventName</h3>
+        <p><strong>Date:</strong> @item.Event.EventDate</p>
+        <p><strong>Venue:</strong> @item.Event.EventVenue</p>
+        <p><strong>Description:</strong> @item.Event.EventDescription</p>
+        <p><strong>Price:</strong> $@item.Event.EventPrice</p>
 
-<div id="eventInfo">
-    <!-- Event info will be displayed here dynamically -->
-</div>
-
-<div id="cart">
-    <!-- Cart items will be displayed here dynamically -->
-</div>
-
-<script>
-    function displayEventInfo() {
-        var eventDropdown = document.getElementById("eventDropdown");
-        var selectedEventId = eventDropdown.value;
-        if (selectedEventId !== "") {
-            // Retrieve event information based on selectedEventId using JavaScript fetch or XMLHttpRequest
-
-            // Replace the following sample event data with actual event information
-            var eventData = {
-                EventName: "Sample Event",
-                EventDate: "2023-10-20",
-                EventVenue: "Sample Venue",
-                EventDescription: "Sample Description",
-                EventPrice: 50.0
-            };
-
-            // Display event information dynamically
-            var eventInfoDiv = document.getElementById("eventInfo");
-            eventInfoDiv.innerHTML = `
-                <p><strong>Event Name:</strong> ${eventData.EventName}</p>
-                <p><strong>Event Date:</strong> ${eventData.EventDate}</p>
-                <p><strong>Venue:</strong> ${eventData.EventVenue}</p>
-                <p><strong>Description:</strong> ${eventData.EventDescription}</p>
-                <label for="ticketQuantity">Select Ticket Quantity:</label>
-                <input type="number" id="ticketQuantity" name="ticketQuantity" min="1" max="10" value="1" onchange="updatePrices()">
-                <p><strong>Price per Ticket:</strong> $<span id="originalPrice">${eventData.EventPrice}</span></p>
-                <p><strong>Discount:</strong> <span id="discount">0.2</span></p>
-                <p><strong>Total Price:</strong> $<span id="totalPrice">${eventData.EventPrice}</span></p>
-                <button onclick="dummyFunction()">Add to Cart</button>
-            `;
-        } else {
-            // Clear the event info section if no event is selected
-            document.getElementById("eventInfo").innerHTML = "";
-        }
-    }
-
-    function updatePrices() {
-        var originalPrice = parseFloat(document.getElementById("originalPrice").innerText);
-        var quantity = parseInt(document.getElementById("ticketQuantity").value);
-        var discount = parseFloat(document.getElementById("discount").innerText);
-
-        var totalPrice = (originalPrice * quantity * (1 - discount)).toFixed(2);
-        document.getElementById("totalPrice").innerText = totalPrice;
-    }
-
-    function dummyFunction() {
-        // Dummy function for the "Add to Cart" button
-    }
-</script>
+        <!-- Button to add the ticket to the cart -->
+        <button class="addToCartButton" data-ticket-id="@item.TicketId">Add to Cart</button>
+    </div>
+}
 
 <style>
-    /* Add your CSS styles here */
+    .ticket {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px;
+    }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script>
+
+    $(document).ready(function () {
+        var cart = [];
+
+        // Click event for "Add to Cart" buttons
+        $(".addToCartButton").click(function () {
+            var ticketId = $(this).data("ticket-id");
+            cart.push(ticketId);
+            alert("Ticket ID " + ticketId + " added to cart.");
+
+            // Optionally, you can update the UI to reflect the item being added to the cart.
+            // For example, change the button text to "Added" or disable the button.
+        });
+
+        // Handle checkout or other cart-related actions here.
+    });
+
+</script>
