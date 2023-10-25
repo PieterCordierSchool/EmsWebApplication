@@ -3,6 +3,38 @@
 @{
     ViewBag.Title = "Delete";
 }
+<style>
+    * {
+        font-family: Courier New, Courier, monospace;
+        color: white
+    }
+
+    .btn {
+        border-color: dimgrey;
+        border-radius: 12px;
+        color: white;
+    }
+
+        .btn:hover {
+            background-color: dimgray;
+            color: white;
+        }
+
+    .form-group {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .form-horizontal {
+        padding-left: 10px;
+    }
+
+    .container body-content {
+        background-color: black;
+    }
+</style>
+
+<canvas id="backgroundCanvas"></canvas><canvas id="backgroundCanvas"></canvas>
 
 <h2>Delete</h2>
 
@@ -69,7 +101,8 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
