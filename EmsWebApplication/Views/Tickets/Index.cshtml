@@ -3,11 +3,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Buy Your Ticket Now!</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<canvas id="TicketsBackground"></canvas>
 
 @foreach (var item in Model)
 {
@@ -21,14 +19,63 @@
         <!-- Button to add the ticket to the cart -->
         <button class="addToCartButton" data-ticket-id="@item.TicketId">Add to Cart</button>
     </div>
+
+
 }
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 
 <style>
+
+    * {
+        font-family: Courier New, Courier, monospace;
+        
+    }
+
+    .addToCartButton {
+        border-color: dimgrey;
+        border-radius: 12px;
+        color: black;
+    }
+
+        .addToCartButton:hover {
+            background-color: dimgray;
+            color: white;
+        }
+
     .ticket {
         border: 1px solid #ccc;
         padding: 10px;
         margin: 10px;
+        border-radius: 12px;
+        background-color: aliceblue;
+        opacity: 0.6
     }
+
+        .ticket:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+            box-shadow:0 0 20px rgb(111, 255, 23);
+        }
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://cdn.wallpapersafari.com/41/48/0xSLbK.jpg");
+        background-repeat: no-repeat;
+        background-position-y: 100%;
+        background-position: center;
+        background-size: cover;
+        z-index: -1;
+    }
+
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
 <script>

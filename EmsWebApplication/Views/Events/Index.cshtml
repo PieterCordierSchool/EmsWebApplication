@@ -3,46 +3,10 @@
 @{
     ViewBag.Title = "Index";
 }
-<style>
-    * {
-        font-family: Courier New, Courier, monospace;
-        
-    }
 
-    .btn {
-        border-color: dimgrey;
-        border-radius: 12px;
-        color: white;
-    }
 
-        .btn:hover {
-            background-color: dimgray;
-            color: white;
-        }
-
-    .form-group {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-
-    .form-horizontal {
-        padding-left: 10px;
-    }
-
-    .container body-content {
-        background-color: black;
-    }
-</style>
-
-<canvas id="backgroundCanvas"></canvas><canvas id="backgroundCanvas"></canvas>
-<h2>Index</h2>
-
-<p>
-    @if (User.Identity.Name == "Admin@test.com")
-    {
-        @Html.ActionLink("Create New", "Create")
-    }
-</p>
+<canvas></canvas>
+<h2>Events</h2>
 
 <div class="card-container">
     @foreach (var item in Model)
@@ -82,6 +46,13 @@
     }
 </div>
 
+<p>
+    @if (User.Identity.Name == "Admin@test.com")
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+</p>
+
 <style>
     .card-container {
         display: flex;
@@ -97,13 +68,66 @@
         margin: 10px;
         width: 300px;
         background-color: #f9f9f9;
-        color black;
+        background-color: aliceblue;
+        opacity: 0.6
     }
+        .card:hover {
+            transform: scale(1.1);
+            transform: scale(1.1);
+            opacity: 1.0;
+            box-shadow: 0 0 20px rgb(111, 255, 23);
+        }
 
     .link {
         display: block;
         margin-top: 10px;
         text-decoration: none;
         color: #4CAF50;
+    }
+
+    * {
+        font-family: Courier New, Courier, monospace;
+    }
+
+    .btn {
+        border-color: dimgrey;
+        border-radius: 12px;
+        color: white;
+    }
+
+        .btn:hover {
+            background-color: dimgray;
+            color: white;
+        }
+
+    .form-group {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .form-horizontal {
+        padding-left: 10px;
+    }
+
+    .container body-content {
+        background-color: black;
+    }
+
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://i1.wp.com/krullcorp.com/wp-content/uploads/2021/05/4th-Industrial-Revolution.jpg?resize=1536%2C1024&ssl=1");
+        background-repeat: no-repeat;
+        background-position-y: 100%;
+        background-position: center;
+        background-size: cover;
+        z-index: -1;
+    }
+    a {
+        text-decoration: none;
+        color: white;
     }
 </style>
