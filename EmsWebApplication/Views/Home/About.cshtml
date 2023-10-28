@@ -1,9 +1,76 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart Example</title>
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div id="cart">
+        <h2>Cart Contents</h2>
+        <ul id="cart-items">
+            <!-- Cart items will be displayed here -->
+        </ul>
+        <p>Total: $<span id="cart-total">0.00</span></p>
+    </div>
+    <div id="products">
+        <h2>Products</h2>
+        <ul id="product-list">
+            <li data-id="1" data-price="10.00">Product 1 - $10.00 <button class="add-to-cart">Add to Cart</button></li>
+            <li data-id="2" data-price="15.00">Product 2 - $15.00 <button class="add-to-cart">Add to Cart</button></li>
+            <li data-id="3" data-price="20.00">Product 3 - $20.00 <button class="add-to-cart">Add to Cart</button></li>
+        </ul>
+    </div>
 
-    <p>Use this area to provide additional information.</p>
-</main>
+    <script>
+        // Shopping cart state
+        const cart = [];
+
+        // Event listener for adding items to the cart
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const product = event.target.parentElement;
+                const productId = product.getAttribute('data-id');
+                const productPrice = parseFloat(product.getAttribute('data-price'));
+
+                // Check if the product is already in the cart
+                const existingProduct = cart.find(item => item.id === productId);
+
+                if (existingProduct) {
+                    // Increment the quantity
+                    existingProduct.quantity++;
+                } else {
+                    // Add the product to the cart
+                    cart.push({
+                        id: productId,
+                        price: productPrice,
+                        quantity: 1
+                    });
+                }
+
+                // Update the cart display
+                updateCart();
+            });
+        });
+
+        // Update the cart contents and total
+        function updateCart() {
+            const cartList = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+
+            cartList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const li = document.createElement('li');
+                li.textContent = `Product ${item.id} - $${item.price} x ${item.quantity}`;
+                cartList.appendChild(li);
+            });
+
+            cartTotal.textContent = total.toFixed(2);
+        }
+    </script>
+</body>
+</html>
