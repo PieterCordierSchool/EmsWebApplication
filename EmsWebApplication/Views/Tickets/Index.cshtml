@@ -1,6 +1,13 @@
 ﻿@model IEnumerable<EmsWebApplication.Models.Ticket>
+@using System.Text.Json;
+
 @{
     ViewBag.Title = "Index";
+    List<int> shoppingCart = new List<int>(); // Initialize an empty shopping cart
+
+    // Serialize shoppingCart on the server side
+    var cartJson = System.Text.Json.JsonSerializer.Serialize(shoppingCart);
+    ViewBag.CartJson = cartJson;
 }
 
 <h2>Buy Your Ticket Now!</h2>
@@ -19,18 +26,21 @@
         <!-- Button to add the ticket to the cart -->
         <button class="addToCartButton" data-ticket-id="@item.TicketId">Add to Cart</button>
     </div>
-
-
 }
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<div>
+    <span>Cart Items: <span id="cartItemCount">0</span></span>
+    <button id="checkoutButton">Checkout</button>
+</div>
 
 <style>
 
     * {
         font-family: Courier New, Courier, monospace;
-        
     }
 
     .addToCartButton {
@@ -56,12 +66,14 @@
         .ticket:hover {
             transform: scale(1.1);
             opacity: 0.8;
-            box-shadow:0 0 20px rgb(111, 255, 23);
+            box-shadow: 0 0 20px rgb(111, 255, 23);
         }
-    a{
+
+    a {
         text-decoration: none;
         color: white;
     }
+
     canvas {
         position: fixed;
         top: 0;
@@ -75,25 +87,49 @@
         background-size: cover;
         z-index: -1;
     }
-
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-<script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
     $(document).ready(function () {
-        var cart = [];
+        var cart = @Html.Raw(ViewBag.CartJson); // Retrieve serialized shopping cart from ViewBag
+
+        // Function to update the UI and shopping cart data
+        function updateCartUI() {
+            // Update the UI to reflect the number of items in the cart
+            $("#cartItemCount").text(cart.length);
+        }
+
+        // Function to display the cart items when the "Checkout" button is clicked
+        function displayCartItems() {
+            if (cart.length > 0) {
+                var itemsList = "Items in your cart:\n";
+                for (var i = 0; i < cart.length; i++) {
+                    itemsList += "- Ticket ID " + cart[i] + "\n";
+                }
+                alert(itemsList);
+            } else {
+                alert("Your cart is empty. Add items before checking out.");
+            }
+        }
 
         // Click event for "Add to Cart" buttons
         $(".addToCartButton").click(function () {
             var ticketId = $(this).data("ticket-id");
             cart.push(ticketId);
-            alert("Ticket ID " + ticketId + " added to cart.");
 
-            // Optionally, you can update the UI to reflect the item being added to the cart.
-            // For example, change the button text to "Added" or disable the button.
+            // Update the UI
+            updateCartUI();
+
+            alert("Ticket ID " + ticketId + " added to cart.");
         });
 
-        // Handle checkout or other cart-related actions here.
-    });
+        // Handle checkout logic (e.g., display cart items)
+        $("#checkoutButton").click(function () {
+            displayCartItems();
+        });
 
+        // Call updateCartUI to initialize the UI when the page loads
+        updateCartUI();
+    });
 </script>
