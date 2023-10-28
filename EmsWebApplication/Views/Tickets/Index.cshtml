@@ -21,10 +21,10 @@
         <p><strong>Date:</strong> @item.Event.EventDate</p>
         <p><strong>Venue:</strong> @item.Event.EventVenue</p>
         <p><strong>Description:</strong> @item.Event.EventDescription</p>
-        <p><strong>Price:</strong> $@item.Event.EventPrice</p>
+        <p><strong>Price:</strong> $<span class="event-price" data-event-price="@item.Event.EventPrice">@item.Event.EventPrice</span></p>
 
-        <!-- Button to add the ticket to the cart -->
-        <button class="addToCartButton" data-ticket-id="@item.TicketId">Add to Cart</button>
+        <!-- Button to add one ticket to the cart -->
+        <button class="addToCartButton" data-ticket-id="@item.TicketId" data-event-name="@item.Event.EventName" data-event-price="@item.Event.EventPrice" data-quantity="1">Add to Cart</button>
     </div>
 }
 
@@ -32,10 +32,115 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<div>
-    <span>Cart Items: <span id="cartItemCount">0</span></span>
-    <button id="checkoutButton">Checkout</button>
+<!-- Button to open the shopping cart modal -->
+<button id="viewCartButton" class="btn btn-primary">View Cart</button>
+
+<!-- Shopping Cart Modal -->
+<div class="modal" id="shoppingCartModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Shopping Cart</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Cart items will be displayed here -->
+                <ul id="cartItemsList">
+                </ul>
+                <p>Total Price: $<span id="cartTotalPrice">0.00</span></p>
+                <!-- Add the "Update Cart" button here -->
+                <button type="button" id="updateCartButton" class="btn btn-primary">Update Cart</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="checkoutButton">Checkout</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).ready(function () {
+        var cart = @Html.Raw(ViewBag.CartJson);
+        var cartTotalPrice = 0;
+
+        function updateCartUI() {
+            var cartItemsList = $("#cartItemsList");
+            cartItemsList.empty();
+            cartTotalPrice = 0;
+
+            for (var i = 0; i < cart.length; i++) {
+                var ticketId = cart[i];
+                var eventName = $("button[data-ticket-id=" + ticketId + "]").data("event-name");
+                var eventPrice = $("button[data-ticket-id=" + ticketId + "]").data("event-price");
+                var quantity = 1; // Set a default quantity of 1
+
+                // Calculate the item price based on the quantity
+                var itemPrice = eventPrice * quantity;
+                cartTotalPrice += itemPrice;
+
+                var listItem = $("<li>Event: " + eventName + ", Price: $" + itemPrice +
+                    " <button class='removeFromCartButton' data-ticket-id='" + ticketId + "'>Remove</button>" +
+                    " <span>Quantity: " + quantity + "</span></li>");
+                cartItemsList.append(listItem);
+            }
+
+            // Update the displayed total price
+            $("#cartTotalPrice").text(cartTotalPrice.toFixed(2));
+        }
+
+        // Event handler for quantity input changes (removed)
+
+        // Click event for the "Update Cart" button (removed)
+
+        // Function to calculate the total price based on the cart items (removed)
+
+        // Function to remove an item from the cart
+        function removeCartItem(ticketId) {
+            cart = cart.filter(function (item) {
+                return item !== ticketId;
+            });
+            updateCartUI();
+        }
+
+        // Click event for "Add to Cart" buttons
+        $(".addToCartButton").click(function () {
+            var ticketId = $(this).data("ticket-id");
+            cart.push(ticketId);
+
+            // Update the UI
+            updateCartUI();
+
+            alert("Ticket ID " + ticketId + " added to cart.");
+        });
+
+        // Click event for "Remove" buttons in the cart
+        $(document).on("click", ".removeFromCartButton", function () {
+            var ticketId = $(this).data("ticket-id");
+            removeCartItem(ticketId);
+        });
+
+        // Handle checkout logic (e.g., display cart items)
+        $("#checkoutButton").click(function () {
+            // Your checkout logic here
+            // You can redirect the user to a checkout page or implement further actions.
+        });
+
+        // Click event to open the shopping cart modal
+        $("#viewCartButton").click(function () {
+            updateCartUI();
+            $("#shoppingCartModal").modal("show");
+        });
+
+        // Click event to close the shopping cart modal
+        $(".close").click(function () {
+            $("#shoppingCartModal").modal("hide");
+        });
+    });
+</script>
 
 <style>
 
@@ -60,7 +165,7 @@
         margin: 10px;
         border-radius: 12px;
         background-color: aliceblue;
-        opacity: 0.6
+        opacity: 0.6;
     }
 
         .ticket:hover {
@@ -88,48 +193,3 @@
         z-index: -1;
     }
 </style>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        var cart = @Html.Raw(ViewBag.CartJson); // Retrieve serialized shopping cart from ViewBag
-
-        // Function to update the UI and shopping cart data
-        function updateCartUI() {
-            // Update the UI to reflect the number of items in the cart
-            $("#cartItemCount").text(cart.length);
-        }
-
-        // Function to display the cart items when the "Checkout" button is clicked
-        function displayCartItems() {
-            if (cart.length > 0) {
-                var itemsList = "Items in your cart:\n";
-                for (var i = 0; i < cart.length; i++) {
-                    itemsList += "- Ticket ID " + cart[i] + "\n";
-                }
-                alert(itemsList);
-            } else {
-                alert("Your cart is empty. Add items before checking out.");
-            }
-        }
-
-        // Click event for "Add to Cart" buttons
-        $(".addToCartButton").click(function () {
-            var ticketId = $(this).data("ticket-id");
-            cart.push(ticketId);
-
-            // Update the UI
-            updateCartUI();
-
-            alert("Ticket ID " + ticketId + " added to cart.");
-        });
-
-        // Handle checkout logic (e.g., display cart items)
-        $("#checkoutButton").click(function () {
-            displayCartItems();
-        });
-
-        // Call updateCartUI to initialize the UI when the page loads
-        updateCartUI();
-    });
-</script>
