@@ -4,43 +4,75 @@
     ViewBag.Title = "Checkout";
     Layout = "~/Views/Shared/_Layout.cshtml"; // Replace with your layout if applicable
 }
+<canvas id="TicketsBackground"></canvas>
 
-<h2>Checkout</h2>
+<div class="card">
+    <h2>Checkout</h2>
 
-@using (Html.BeginForm("ProcessCheckout", "Tickets", FormMethod.Post))
-{
-    <!-- Shipping Information -->
-    <h3>Shipping Information</h3>
-    <div class="form-group">
-        @Html.LabelFor(model => model.ShippingAddress)
-        @Html.TextBoxFor(model => model.ShippingAddress, new { @class = "form-control" })
-    </div>
+    @using (Html.BeginForm("ProcessCheckout", "Tickets", FormMethod.Post))
+    {
+        <!-- Shipping Information -->
+        <h3>Shipping Information</h3>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShippingAddress)
+            @Html.TextBoxFor(model => model.ShippingAddress, new { @class = "form-control" })
+        </div>
 
-    <!-- Billing Information -->
-    <h3>Billing Information</h3>
-    <div class="form-group">
-        @Html.LabelFor(model => model.BillingAddress)
-        @Html.TextBoxFor(model => model.BillingAddress, new { @class = "form-control" })
-    </div>
+        <!-- Billing Information -->
+        <h3>Billing Information</h3>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BillingAddress)
+            @Html.TextBoxFor(model => model.BillingAddress, new { @class = "form-control" })
+        </div>
 
-    <!-- Order Summary -->
-    <h3>Order Summary</h3>
-    <div>
-        <!-- Check if the model.CartItems is not null -->
-        @if (Model.CartItems != null && Model.CartItems.Any())
-        {
-            foreach (var item in Model.CartItems)
+        <!-- Order Summary -->
+        <h3>Order Summary</h3>
+        <div>
+            <!-- Check if the model.CartItems is not null -->
+            @if (Model.CartItems != null && Model.CartItems.Any())
             {
-                <p>@item.EventName - $@item.TotalPrice</p>
+                foreach (var item in Model.CartItems)
+                {
+                    <p>@item.EventName - $@item.TotalPrice</p>
+                }
             }
-        }
-        else
-        {
-            <p>No items in the cart.</p>
-        }
-    </div>
+            else
+            {
+                <p>No items in the cart.</p>
+            }
+        </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Place Order</button>
-    </div>
-}
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        </div>
+    }
+
+</div>
+
+<style>
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://cdn.wallpapersafari.com/41/48/0xSLbK.jpg");
+        background-repeat: no-repeat;
+        background-position-y: 100%;
+        background-position: center;
+        background-size: cover;
+        z-index: -1;
+    }
+
+    .card{
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 15px;
+        width: 300px;
+        background-color: #f9f9f9;
+        background-color: aliceblue;
+        opacity: 0.9
+    }
+
+</style>    
