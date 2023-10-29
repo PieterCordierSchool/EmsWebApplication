@@ -1,51 +1,56 @@
 ﻿<canvas id="backgroundCanvas"></canvas>
 <head>
+
     <style>
         main {
     display: flex;
 }
 
-.Layout {
+
+    .Layout {
     flex: 0 0 calc(33.33% - 0px);
     margin-top: 1vh;
     box-sizing: border-box;
     overflow: hidden;
     transition: transform 3s ease;
     text-align: center;
-}
+    }
 
-Title.h1, h2 {
-    color: White;
-}
+        Title.h1, h2 {
 
-.Title {
+            color: #009688;
+            font-family: 'Times New Roman'
+        }
+
+
+    .Title {
     flex: 10 10 calc(100% - 10px);
     text-align: center;
     animation: glow 3s infinite;
-}
+    }
 
-.ThirdOfPage {
+    .ThirdOfPage {
     padding: 20px;
     transition: transform 2s ease, margin 2s ease;
-}
+    }
 
-.left {
+    .left {
     background: linear-gradient(to right, rgb(30, 30, 30), rgb(20, 20, 20), rgb(15, 15, 15));
     transition: transform 2s ease;
     position: relative;
-}
+    }
 
-.middle {
+    .middle {
     background: linear-gradient(to left,rgb(15, 15, 15), rgb(0, 0, 0),rgb(15, 15, 15));
     transition: transform 2s ease;
     position: relative;
-}
+    }
 
-.right {
+    .right {
     background: linear-gradient(to left, rgb(30, 30, 30), rgb(20, 20, 20), rgb(15, 15, 15));
     transition: transform 2s ease;
     position: relative;
-}
+    }
 
     .left:hover, .middle:hover, .right:hover {
         transform: scale(1.1);
@@ -67,6 +72,14 @@ Title.h1, h2 {
     background-size: cover;
     z-index: -1;
 }
+
+ titleImage{
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 footer{
     color:white;
 }
@@ -75,10 +88,8 @@ footer{
 <body>
 
     <section>
-        <div>
-            <h1 class="Title">
-                TECHEXPO 2023
-            </h1>
+        <div class="titleImage">
+            <img src="~/LogoTECHSPO.png" height="60" width="300" style="display: block; margin: 0 auto;" />
         </div>
     </section>
     <main>
@@ -88,8 +99,8 @@ footer{
                     <h2>
                         More about Us
                     </h2>
-                    <a href="~/Views/Home/About.cshtml">
-                    <img src="https://e1.pxfuel.com/desktop-wallpaper/634/471/desktop-wallpaper-motherboard-black-and-white-motherboards-lines.jpg" height="400" width="400" alt="Alternate Text" />
+                    <a href="@Url.Action("About", "Home")">
+                        <img src="https://e1.pxfuel.com/desktop-wallpaper/634/471/desktop-wallpaper-motherboard-black-and-white-motherboards-lines.jpg" height="400" width="400" alt="Alternate Text" />
                     </a>
                    
                 </div>
@@ -100,8 +111,8 @@ footer{
             <div class="middle">
                 <div class="ThirdOfPage">
                     <h2> Members Only</h2>
-                    <a href="">
-                        <img src="https://www.innovationnewsnetwork.com/wp-content/uploads/2022/02/Background-Pic-696x392.png" height="400" width="400" alt="Alternate Text" />
+                    <a href="@Url.Action("Login", "Account")">
+                        <img src="https://images.pexels.com/photos/3094799/pexels-photo-3094799.jpeg?auto=compress&cs=tinysrgb&w=1600" height="400" width="400" alt="Alternate Text" />
                     </a>
                 </div>
             </div>
@@ -111,12 +122,12 @@ footer{
             <div class="right">
                 <div class="ThirdOfPage">
                     <h2> Contact us </h2>
-                    <a href="~/Views/Home/Contact.cshtml">
-                        <img src="https://media.istockphoto.com/id/1325084682/photo/hand-holding-mobile-phone-blue-light-effect-on-black-background.jpg?s=612x612&w=0&k=20&c=B94ktEQc49p0U8MaGY-o9-G9kSLixrPrsM1O3-1iKBs=" height="400" width="400" alt="Alternate Text" />
-                     </a>
-                  </div>
+                    <a href="@Url.Action("Contact", "Home")">
+                        <img src="https://media.istockphoto.com/id/1325084682/photo/hand-holding-mobile-phone-blue-light-effect-on-black-background.jpg?s=612x612&w=0&k=20&c=B94ktEQc49p0U8MaGY-o9-G9kSLixrPrsM1O3-1iKBs=" height="400" width="400" alt="Alternate Text" />                    </a>
+                </div>
             </div>
         </section>
     </main>
 
 </body>
+
