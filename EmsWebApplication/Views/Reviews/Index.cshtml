@@ -101,52 +101,59 @@
                 background-color: #00726a; /* Darker teal color on hover */
             }
 
-        /* Additional styles can be added as needed for specific elements */
+        .logo {
+            position: absolute;
+            top: 10px; /* Adjust the top position as needed */
+            left: 10px; /* Adjust the left position as needed */
+            width: 50px; /* Adjust the width as needed */
+            height: 50px; /* Adjust the height as needed */
+        }
 
     </style>
 </head>
 <body>
+    <img src="https://logowik.com/content/uploads/images/springboks-rugby9694.logowik.com.webp" alt="Your Logo" class="logo" />
     <h2>Reviews</h2>
-    @if (User.Identity.Name == "Admin@test.com")
+    @if (User.Identity.Name == "Admin@test1.com")
     {
         <p> @Html.ActionLink("Create New", "Create")</p>
     }
-        <table class="table">
+    <table class="table">
+        <tr>
+            <th>User Review</th>
+            <th>Rating</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>User Review</th>
-                <th>Rating</th>
-                <th></th>
-            </tr>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.UserReview)</td>
-                    <td>
-                        @for (int i = 1; i <= 5; i++)
-                        {
-                            if (i <= item.Rating)
-                            {
-                                <span class="fa fa-star checked"></span>
-                            }
-                            else
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                    </td>
-                    @*only show the links if The signed in email is Admin@test.com*@
-                    @if (User.Identity.Name == "Admin@test.com")
+                <td>@Html.DisplayFor(modelItem => item.UserReview)</td>
+                <td>
+                    @for (int i = 1; i <= 5; i++)
                     {
-
-
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id.ToString() })
-                        </td>
+                        if (i <= item.Rating)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        else
+                        {
+                            <span class="fa fa-star"></span>
+                        }
                     }
-                </tr>
-            }
-        </table>
-    </body>
+                </td>
+                @*only show the links if The signed in email is Admin@test1.com*@
+                @if (User.Identity.Name == "Admin@test1.com")
+                {
+
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id.ToString() })
+                    </td>
+                }
+            </tr>
+        }
+    </table>0
+</body>
 </html>
