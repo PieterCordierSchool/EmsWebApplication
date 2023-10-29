@@ -46,12 +46,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Cart items will be displayed here -->
-                <ul id="cartItemsList">
-                </ul>
-                <p>Total Price: $<span id="cartTotalPrice">0.00</span></p>
-                <!-- Add the "Update Cart" button here -->
-                <button type="button" id="updateCartButton" class="btn btn-primary">Update Cart</button>
+                <div class="cart-container">
+                    <ul class="cart-items" id="cartItemsList">
+                    </ul>
+                </div>
+                <div class="cart-summary">
+                    <div class="total-price">
+                        <span class="total-label">Total Price:</span>
+                        <span class="total-amount" id="cartTotalPrice">$0.00</span>
+                    </div>
+                    <button type="button" id="updateCartButton" class="btn btn-primary update-cart-button">Update Cart</button>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -63,58 +68,102 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-   $(document).ready(function () {
-        var cart = @Html.Raw(ViewBag.CartJson);
+    $(document).ready(function () {
+        // Load the cart from session storage, or initialize an empty cart
+        var cart = JSON.parse(sessionStorage.getItem('cart')) || [];
         var cartTotalPrice = 0;
+
+        // Function to update the cart item quantity and recalculate item prices in real-time
+        $(document).on("change", ".cart-item-quantity", function () {
+            var ticketId = $(this).data("ticket-id");
+            var newQuantity = parseInt($(this).val());
+
+            // Update the cart with the new quantity
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].ticketId === ticketId) {
+                    cart[i].quantity = newQuantity;
+                }
+            }
+
+            // Update the displayed total price in real-time
+            cartTotalPrice = calculateTotalPrice(cart);
+            $("#cartTotalPrice").text(cartTotalPrice.toFixed(2));
+
+            // Store the updated cart in session storage
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+        });
+
+        function calculateTotalPrice(cart) {
+            var total = 0;
+            for (var i = 0; i < cart.length; i++) {
+                var ticketId = cart[i].ticketId;
+                var eventPrice = $("button[data-ticket-id=" + ticketId + "]").data("event-price");
+                var quantity = cart[i].quantity;
+                total += eventPrice * quantity;
+            }
+            return total;
+        }
 
         function updateCartUI() {
             var cartItemsList = $("#cartItemsList");
             cartItemsList.empty();
-            cartTotalPrice = 0;
 
             for (var i = 0; i < cart.length; i++) {
-                var ticketId = cart[i];
+                var cartItem = cart[i];
+                var ticketId = cartItem.ticketId;
                 var eventName = $("button[data-ticket-id=" + ticketId + "]").data("event-name");
                 var eventPrice = $("button[data-ticket-id=" + ticketId + "]").data("event-price");
-                var quantity = 1; // Set a default quantity of 1
+                var quantity = cartItem.quantity;
 
-                // Calculate the item price based on the quantity
-                var itemPrice = eventPrice * quantity;
-                cartTotalPrice += itemPrice;
-
-                var listItem = $("<li>Event: " + eventName + ", Price: $" + itemPrice +
-                    " <button class='removeFromCartButton' data-ticket-id='" + ticketId + "'>Remove</button>" +
-                    " <span>Quantity: " + quantity + "</span></li>");
+                var listItem = $("<li class='cart-item'>Event: " + eventName + ", Price: $" + (eventPrice * quantity).toFixed(2) +
+                    " <input type='number' class='cart-item-quantity' data-ticket-id='" + ticketId + "' value='" + quantity + "' min='1'>" +
+                    " <button class='removeFromCartButton' data-ticket-id='" + ticketId + "'>Remove</button></li>");
                 cartItemsList.append(listItem);
             }
-
-            // Update the displayed total price
-            $("#cartTotalPrice").text(cartTotalPrice.toFixed(2));
         }
-
-        // Event handler for quantity input changes (removed)
-
-        // Click event for the "Update Cart" button (removed)
-
-        // Function to calculate the total price based on the cart items (removed)
 
         // Function to remove an item from the cart
         function removeCartItem(ticketId) {
             cart = cart.filter(function (item) {
-                return item !== ticketId;
+                return item.ticketId !== ticketId;
             });
             updateCartUI();
+
+            // Update the displayed total price when removing an item
+            cartTotalPrice = calculateTotalPrice(cart);
+            $("#cartTotalPrice").text(cartTotalPrice.toFixed(2));
+
+            // Store the updated cart in session storage
+            sessionStorage.setItem('cart', JSON.stringify(cart));
         }
 
         // Click event for "Add to Cart" buttons
         $(".addToCartButton").click(function () {
             var ticketId = $(this).data("ticket-id");
-            cart.push(ticketId);
+            var existingCartItem = cart.find(function (item) {
+                return item.ticketId === ticketId;
+            });
+
+            if (existingCartItem) {
+                existingCartItem.quantity += 1;
+            } else {
+                cart.push({
+                    ticketId: ticketId,
+                    quantity: 1
+                });
+            }
 
             // Update the UI
             updateCartUI();
 
             alert("Ticket ID " + ticketId + " added to cart.");
+
+            // Update the displayed total price when adding an item
+            cartTotalPrice = calculateTotalPrice(cart);
+            $("#cartTotalPrice").text(cartTotalPrice.toFixed(2));
+
+            // Store the updated cart in session storage
+            sessionStorage.setItem('cart', JSON.stringify(cart));
         });
 
         // Click event for "Remove" buttons in the cart
@@ -122,12 +171,25 @@
             var ticketId = $(this).data("ticket-id");
             removeCartItem(ticketId);
         });
+        // Function to handle the checkout process
+        function checkout() {
+            if (cart.length === 0) {
+                // Check if the cart is empty and inform the user
+                alert("Your cart is empty. Please add items to your cart before checking out.");
+            } else {
+                // Your checkout logic here
+                // You can implement the checkout process, redirect the user to a checkout page, or show a confirmation message.
+                alert("Checkout process initiated. Thank you for your order!");
+                // Redirect the user to the checkout page
+                window.location.href = "/Tickets/Checkout"; // Replace with the actual URL of your checkout page
+            }
+        }
 
-        // Handle checkout logic (e.g., display cart items)
+        // Click event for the "Checkout" button
         $("#checkoutButton").click(function () {
-            // Your checkout logic here
-            // You can redirect the user to a checkout page or implement further actions.
+            checkout();
         });
+
 
         // Click event to open the shopping cart modal
         $("#viewCartButton").click(function () {
@@ -191,5 +253,72 @@
         background-position: center;
         background-size: cover;
         z-index: -1;
+    }
+
+    .modal-content {
+        border-radius: 0;
+    }
+
+    .modal-title {
+        font-size: 24px;
+    }
+
+    .modal-header {
+        background-color: #007BFF;
+        color: #fff;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    .cart-container {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .cart-items {
+        list-style: none;
+        padding: 0;
+    }
+
+    .cart-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        padding: 5px 0;
+    }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+    .cart-item-quantity {
+        width: 50px;
+    }
+
+    .cart-summary {
+        margin-top: 15px;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+    }
+
+    .total-label {
+        font-weight: bold;
+    }
+
+    .total-amount {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .update-cart-button {
+        margin-top: 10px;
+    }
+
+    .modal-footer {
+        justify-content: space-between;
     }
 </style>

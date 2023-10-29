@@ -8,6 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using EmsWebApplication.Models;
 
+
+
+
 namespace EmsWebApplication.Controllers
 {
     public class TicketsController : Controller
@@ -133,6 +136,54 @@ namespace EmsWebApplication.Controllers
             var selectedEvent = db.Events.Find(eventId);
             return PartialView("_EventInfoPartial", selectedEvent);
         }
-    }
 
+        public ActionResult Checkout()
+        {
+            var checkoutViewModel = new CheckoutViewModel
+            {
+                CartItems = GetCartItemsFromSession(), // Correctly assign cart items
+                                                       // Other properties for the checkoutViewModel
+            };
+
+            return View(checkoutViewModel);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult ProcessCheckout(CheckoutViewModel checkoutViewModel)
+        {
+            // Process the checkout and handle the provided shipping and billing information.
+            // You can access the cart items in checkoutViewModel.CartItems.
+
+            return View("CheckoutConfirmation"); // Redirect to a confirmation view.
+        }
+
+        public ActionResult Confirmation()
+        {
+            return View();
+        }
+
+        private List<CartItemViewModel> GetCartItemsFromSession()
+        {
+            var cartItems = HttpContext.Session["CartItems"] as List<CartItem>;
+            if (cartItems != null)
+            {
+                // Convert CartItem objects to CartItemViewModel objects
+                var cartItemViewModels = cartItems.Select(cartItem => new CartItemViewModel
+                {
+                    TicketId = cartItem.TicketId,
+                    EventName = cartItem.EventName,
+                    EventPrice = cartItem.EventPrice,
+                    Quantity = cartItem.Quantity
+                }).ToList();
+
+                return cartItemViewModels;
+            }
+
+            return new List<CartItemViewModel>();
+        }
+    }
 }
+
+

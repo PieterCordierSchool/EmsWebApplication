@@ -235,6 +235,8 @@
     <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>MyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartItemViewModel.cs" />
+    <Compile Include="Models\CheckoutViewModel.cs" />
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>MyModel.tt</DependentUpon>
     </Compile>
@@ -380,6 +382,8 @@
     <Content Include="Views\Tickets\Details.cshtml" />
     <Content Include="Views\Tickets\Edit.cshtml" />
     <Content Include="Views\Tickets\Index.cshtml" />
+    <Content Include="Views\Tickets\Confirmation.cshtml" />
+    <Content Include="Views\Tickets\Checkout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
