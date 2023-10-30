@@ -1,312 +1,339 @@
-﻿<section class="header-section">
-    <div class="header-container">
-        <h1 class="header-title">Upcoming Events</h1>
-        <p class="header-description">Explore our exciting lineup of events</p>
-    </div>
-</section>
-
-@model IEnumerable<EmsWebApplication.Models.Event>
-
-@{
-    ViewBag.Title = "Index";
-}
-
-
-<canvas></canvas>
-
-
-<div class="card-container">
-    @foreach (var item in Model)
-    {
-        <div class="card">
-            <h3>@item.EventName</h3>
-            <p><strong>Date:</strong> @item.EventDate.ToString("dddd, MMMM d, yyyy")</p>
-            <p><strong>Venue:</strong> @item.EventVenue</p>
-            <p><strong>Description:</strong> @item.EventDescription</p>
-            <p>
-                <strong>Price:</strong> $@item.EventPrice
-                @if (item.EventPromoDateStart <= DateTime.Now && item.EventPromoDateEnd >= DateTime.Now)
-                {
-                    <text><br /><strong>Discounted Price:</strong> $@(item.EventPrice * 0.8)</text>
-                }
-            </p>
-            <p>
-                <strong>Promotion:</strong> @{
-                    if (item.EventPromoDateStart <= DateTime.Now && item.EventPromoDateEnd >= DateTime.Now)
-                    {
-                        @Html.Raw("20% Discount");
-                    }
-                    else
-                    {
-                        @Html.Raw("No promotion active");
-                    }
-                }
-            </p>
-            @if (User.Identity.Name == "Admin@test.com")
-            {
-                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "link" })
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "link" })
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "link" })
-                @Html.ActionLink("Create New", "Create", new { id = item.Id }, new { @class = "link" })
-            }
-            @Html.ActionLink("Buy Tickets", "BuyTickets", new { eventId = item.Id }, new { @class = "link" })
-        </div>
-    }
-</div>
-
-
-
-<style>
-    .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    .card {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 20px;
-        margin: 10px;
-        width: 300px;
-        background-color: #f9f9f9;
-        background-color: aliceblue;
-        opacity: 0.6
-    }
-        .card:hover {
-            transform: scale(1.1);
-            transform: scale(1.1);
-            opacity: 1.0;
-            box-shadow: 0 0 20px rgb(111, 255, 23);
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Upcoming Events</title>
+    <style>
+        /* Your existing styles */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
         }
 
-    .link {
-        display: block;
-        margin-top: 10px;
-        text-decoration: none;
-        color: #4CAF50;
-    }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 10px;
+            width: 300px;
+            background-color: rgba(255, 255, 255, 0.8);
+            opacity: 0.8;
+            color: #333;
+        }
 
-    * {
-        font-family: Courier New, Courier, monospace;
-    }
+            .card:hover {
+                transform: scale(1.1);
+                opacity: 1;
+                box-shadow: 0 0 20px rgba(111, 255, 23, 0.8);
+            }
 
-    .btn {
-        border-color: dimgrey;
-        border-radius: 12px;
-        color: white;
-    }
+        .link {
+            display: block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #4CAF50;
+        }
 
-        .btn:hover {
-            background-color: dimgray;
+        * {
+            font-family: Courier New, Courier, monospace;
+        }
+
+        .btn {
+            border-color: dimgrey;
+            border-radius: 12px;
             color: white;
         }
 
-    .form-group {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
+            .btn:hover {
+                background-color: dimgray;
+                color: white;
+            }
 
-    .form-horizontal {
-        padding-left: 10px;
-    }
+        .form-group {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
 
-    .container body-content {
-        background-color: black;
-    }
+        .form-horizontal {
+            padding-left: 10px;
+        }
 
-    canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("https://i1.wp.com/krullcorp.com/wp-content/uploads/2021/05/4th-Industrial-Revolution.jpg?resize=1536%2C1024&ssl=1");
-        background-repeat: no-repeat;
-        background-position-y: 100%;
-        background-position: center;
-        background-size: cover;
-        z-index: -1;
-    }
-    a {
-        text-decoration: none;
-        color: white;
-    }
-</style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://i1.wp.com/krullcorp.com/wp-content/uploads/2021/05/4th-Industrial-Revolution.jpg?resize=1536%2C1024&ssl=1");
+            background-repeat: no-repeat;
+            background-position-y: 100%;
+            background-position: center;
+            background-size: cover;
+            z-index: -1;
+        }
 
-<style>
-    body {
-        font-family: Arial;
-        margin: 0;
-    }
+        a {
+            text-decoration: none;
+            color: white;
+        }
 
-    * {
-        box-sizing: border-box;
-    }
+        body {
+            font-family: Arial;
+            margin: 0;
+            background-color: white; /* Add this line to set the background color to white */
+        }
 
-    img {
-        vertical-align: middle;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    .container {
-        position: relative;
-    }
+        img {
+            vertical-align: middle;
+        }
 
-    .mySlides {
-        display: none;
-    }
+        .container {
+            position: relative;
+        }
 
-    .cursor {
-        cursor: pointer;
-    }
+        .mySlides {
+            display: none;
+        }
 
-    .prev,
-    .next {
-        cursor: pointer;
-        position: absolute;
-        top: 40%;
-        width: auto;
-        padding: 16px;
-        margin-top: -50px;
-        color: white;
-        font-weight: bold;
-        font-size: 20px;
-        border-radius: 0 3px 3px 0;
-        user-select: none;
-        -webkit-user-select: none;
-    }
+        .cursor {
+            cursor: pointer;
+        }
 
-    .next {
-        right: 0;
-        border-radius: 3px 0 0 3px;
-    }
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 40%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
-        .prev:hover,
-        .next:hover {
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+            .prev:hover,
+            .next:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+        .caption-container {
+            text-align: center;
+            background-color: #222;
+            padding: 2px 16px;
+            color: white;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .column {
+            float: left;
+            width: 16.66%;
+        }
+
+        .demo {
+            opacity: 0.6;
+        }
+
+            .active,
+            .demo:hover {
+                opacity: 1;
+            }
+
+        .header-section {
             background-color: rgba(0, 0, 0, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            color: white;
         }
 
-    .numbertext {
-        color: #f2f2f2;
-        font-size: 12px;
-        padding: 8px 12px;
-        position: absolute;
-        top: 0;
-    }
-
-    .caption-container {
-        text-align: center;
-        background-color: #222;
-        padding: 2px 16px;
-        color: white;
-    }
-
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-
-    .column {
-        float: left;
-        width: 16.66%;
-    }
-
-    .demo {
-        opacity: 0.6;
-    }
-
-        .active,
-        .demo:hover {
-            opacity: 1;
+        .header-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
-    .header-section {
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 30px 0;
-        text-align: center;
-    }
 
-    .header-container {
-        max-width: 800px;
-        margin: 0 auto;
-    }
+        .header-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
 
-    .header-title {
-        font-size: 2.5rem;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .header-description {
-        font-size: 1.2rem;
-        color: #666;
-    }
-</style>
-
-<section>
-
-    <h2 style="text-align:center">Slideshow Gallery</h2>
-
-    <div class="container">
-        <div class="mySlides">
-            <div class="numbertext">1 / 6</div>
-            <img src="https://techspola.com/wp-content/uploads/2022/11/techspo-hall.png" style="width:100%">
+        .header-description {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <section class="header-section">
+        <div class="header-container">
+            <h1 class="header-title">Upcoming Events</h1>
+            <p class="header-description">Explore our exciting lineup of events</p>
         </div>
+    </section>
 
-        <div class="mySlides">
-            <div class="numbertext">2 / 6</div>
-            <img src="https://techspola.com/wp-content/uploads/2022/11/training-theater-1.png" style="width:100%">
-        </div>
+    @model IEnumerable<EmsWebApplication.Models.Event>
 
-        <div class="mySlides">
-            <div class="numbertext">3 / 6</div>
-            <img src="https://techspola.com/wp-content/uploads/2022/11/podcast-studio-1.png" style="width:100%">
-        </div>
+    <canvas></canvas>
 
-        <div class="mySlides">
-            <div class="numbertext">4 / 6</div>
-            <img src="https://techspola.com/wp-content/uploads/2022/11/dining-hall-1.png" style="width:100%">
-        </div>
-
-        <div class="mySlides">
-            <div class="numbertext">5 / 6</div>
-            <img src="https://techspola.com/wp-content/uploads/2022/11/photo-booth-1.png" style="width:100%">
-        </div>
-
-        <div class="mySlides">
-            <div class="numbertext">6 / 6</div>
-            <img src="https://techspola.com/wp-content/uploads/2022/11/digimarcon-auditorium.png" style="width:100%">
-        </div>
-
-        <a class="prev" onclick="plusSlides(-1)">❮</a>
-        <a class="next" onclick="plusSlides(1)">❯</a>
-
-        <div class="caption-container">
-            <p id="caption"></p>
-        </div>
-
-        <div class="row">
-            <div class="column">
-                <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/techspo-hall.png" style="width:100%" onclick="currentSlide(1)" alt="TECHSPO Hall">
+    <div class="card-container">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <h3>@item.EventName</h3>
+                <p><strong>Date:</strong> @item.EventDate.ToString("dddd, MMMM d, yyyy")</p>
+                <p><strong>Venue:</strong> @item.EventVenue</p>
+                <p><strong>Description:</strong> @item.EventDescription</p>
+                <p>
+                    <strong>Price:</strong> $@item.EventPrice
+                    @if (item.EventPromoDateStart <= DateTime.Now && item.EventPromoDateEnd >= DateTime.Now)
+                    {
+                        <text><br /><strong>Discounted Price:</strong> $@(item.EventPrice * 0.8)</text>
+                    }
+                </p>
+                <p>
+                    <strong>Promotion:</strong> @{
+                        if (item.EventPromoDateStart <= DateTime.Now && item.EventPromoDateEnd >= DateTime.Now)
+                        {
+                            @Html.Raw("20% Discount");
+                        }
+                        else
+                        {
+                            @Html.Raw("No promotion active");
+                        }
+                    }
+                </p>
+                @if (User.Identity.Name == "Admin@test.com")
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "link" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "link" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "link" })
+                    @Html.ActionLink("Create New", "Create", new { id = item.Id }, new { @class = "link" })
+                }
+                @Html.ActionLink("Buy Tickets", "BuyTickets", new { eventId = item.Id }, new { @class = "link" })
             </div>
-            <div class="column">
-                <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/training-theater-1.png" style="width:100%" onclick="currentSlide(2)" alt="Training Theater">
-            </div>
-            <div class="column">
-                <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/podcast-studio-1.png" style="width:100%" onclick="currentSlide(3)" alt="Podcast Studio">
-            </div>
-            <div class="column">
-                <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/dining-hall-1.png" style="width:100%" onclick="currentSlide(4)" alt="Dining Hall">
-            </div>
-            <div class="column">
-                <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/photo-booth-1.png" style="width:100%" onclick="currentSlide(5)" alt="Photo Booth">
-            </div>
-            <div class="column">
-                <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/digimarcon-auditorium.png" style="width:100%" onclick="currentSlide(6)" alt="DigiMarCon Auditorium">
-            </div>
-        </div>
+        }
     </div>
+
+    <section>
+
+        <h2 style="text-align:center">Slideshow Gallery</h2>
+
+        <div class="container">
+            <div class="mySlides">
+                <div class="numbertext">1 / 6</div>
+                <img src="https://techspola.com/wp-content/uploads/2022/11/techspo-hall.png" style="width:100%">
+            </div>
+
+            <div class="mySlides">
+                <div class="numbertext">2 / 6</div>
+                <img src="https://techspola.com/wp-content/uploads/2022/11/training-theater-1.png" style="width:100%">
+            </div>
+
+            <div class="mySlides">
+                <div class="numbertext">3 / 6</div>
+                <img src="https://techspola.com/wp-content/uploads/2022/11/podcast-studio-1.png" style="width:100%">
+            </div>
+
+            <div class="mySlides">
+                <div class="numbertext">4 / 6</div>
+                <img src="https://techspola.com/wp-content/uploads/2022/11/dining-hall-1.png" style="width:100%">
+            </div>
+
+            <div class="mySlides">
+                <div class="numbertext">5 / 6</div>
+                <img src="https://techspola.com/wp-content/uploads/2022/11/photo-booth-1.png" style="width:100%">
+            </div>
+
+            <div class="mySlides">
+                <div class="numbertext">6 / 6</div>
+                <img src="https://techspola.com/wp-content/uploads/2022/11/digimarcon-auditorium.png" style="width:100%">
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+
+            <div class="caption-container">
+                <p id="caption"></p>
+            </div>
+
+            <div class="row">
+                <div class="column">
+                    <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/techspo-hall.png" style="width:100%" onclick="currentSlide(1)" alt="TECHSPO Hall">
+                </div>
+                <div class="column">
+                    <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/training-theater-1.png" style="width:100%" onclick="currentSlide(2)" alt="Training Theater">
+                </div>
+                <div class="column">
+                    <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/podcast-studio-1.png" style="width:100%" onclick="currentSlide(3)" alt="Podcast Studio">
+                </div>
+                <div class="column">
+                    <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/dining-hall-1.png" style="width:100%" onclick="currentSlide(4)" alt="Dining Hall">
+                </div>
+                <div class="column">
+                    <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/photo-booth-1.png" style="width:100%" onclick="currentSlide(5)" alt="Photo Booth">
+                </div>
+                <div class="column">
+                    <img class="demo cursor" src="https://techspola.com/wp-content/uploads/2022/11/digimarcon-auditorium.png" style="width:100%" onclick="currentSlide(6)" alt="DigiMarCon Auditorium">
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let slideIndex = 1;
+            showSlides(slideIndex);
+
+            function plusSlides(n) {
+                showSlides(slideIndex += n);
+            }
+
+            function currentSlide(n) {
+                showSlides(slideIndex = n);
+            }
+
+            function showSlides(n) {
+                let i;
+                let slides = document.getElementsByClassName("mySlides");
+                let dots = document.getElementsByClassName("demo");
+                let captionText = document.getElementById("caption");
+                if (n > slides.length) { slideIndex = 1 }
+                if (n < 1) { slideIndex = slides.length }
+                for (i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+                for (i = 0; i < dots.length; i++) {
+                    dots[i].className = dots[i].className.replace(" active", "");
+                }
+                slides[slideIndex - 1].style.display = "block";
+                dots[slideIndex - 1].className += " active";
+                captionText.innerHTML = dots[slideIndex - 1].alt;
+            }
+        </script>
+
+    </section>
 
     <script>
         let slideIndex = 1;
@@ -338,5 +365,5 @@
             captionText.innerHTML = dots[slideIndex - 1].alt;
         }
     </script>
-
-</section>
+</body>
+</html>

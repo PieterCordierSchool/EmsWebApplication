@@ -8,7 +8,7 @@
 <html>
 <head>
     <title>Reviews</title>
-    <!-- include necessary CSS files -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .checked {
@@ -113,10 +113,9 @@
 <body>
     <img src="https://logowik.com/content/uploads/images/springboks-rugby9694.logowik.com.webp" alt="Your Logo" class="logo" />
     <h2>Reviews</h2>
-    @if (User.Identity.Name == "Admin@test1.com")
-    {
-        <p> @Html.ActionLink("Create New", "Create")</p>
-    }
+    
+        <p> @Html.ActionLink("Add a Review", "Create")</p>
+    
     <table class="table">
         <tr>
             <th>User Review</th>
