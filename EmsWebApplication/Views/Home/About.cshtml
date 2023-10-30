@@ -3,74 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart Example</title>
+    <title>About Us</title>
+    <style>
+        body {
+            background-image: url(https://issafrica.s3.amazonaws.com/site/images/banners/2019-09-09-iss-today-4ir-banner.jpg);
+            background-size: cover;
+        }
+
+        h1 {
+            color: floralwhite;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif
+        }
+
+        p {
+            text-align: justify;
+            margin: 20px;
+            font-size: 18px;
+            line-height: 1.5;
+            color: beige;
+        }
+    </style>
 </head>
 <body>
-    <h1>Shopping Cart</h1>
-    <div id="cart">
-        <h2>Cart Contents</h2>
-        <ul id="cart-items">
-            <!-- Cart items will be displayed here -->
-        </ul>
-        <p>Total: $<span id="cart-total">0.00</span></p>
-    </div>
-    <div id="products">
-        <h2>Products</h2>
-        <ul id="product-list">
-            <li data-id="1" data-price="10.00">Product 1 - $10.00 <button class="add-to-cart">Add to Cart</button></li>
-            <li data-id="2" data-price="15.00">Product 2 - $15.00 <button class="add-to-cart">Add to Cart</button></li>
-            <li data-id="3" data-price="20.00">Product 3 - $20.00 <button class="add-to-cart">Add to Cart</button></li>
-        </ul>
-    </div>
-
-    <script>
-        // Shopping cart state
-        const cart = [];
-
-        // Event listener for adding items to the cart
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const product = event.target.parentElement;
-                const productId = product.getAttribute('data-id');
-                const productPrice = parseFloat(product.getAttribute('data-price'));
-
-                // Check if the product is already in the cart
-                const existingProduct = cart.find(item => item.id === productId);
-
-                if (existingProduct) {
-                    // Increment the quantity
-                    existingProduct.quantity++;
-                } else {
-                    // Add the product to the cart
-                    cart.push({
-                        id: productId,
-                        price: productPrice,
-                        quantity: 1
-                    });
-                }
-
-                // Update the cart display
-                updateCart();
-            });
-        });
-
-        // Update the cart contents and total
-        function updateCart() {
-            const cartList = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
-
-            cartList.innerHTML = '';
-            let total = 0;
-
-            cart.forEach(item => {
-                total += item.price * item.quantity;
-                const li = document.createElement('li');
-                li.textContent = `Product ${item.id} - $${item.price} x ${item.quantity}`;
-                cartList.appendChild(li);
-            });
-
-            cartTotal.textContent = total.toFixed(2);
-        }
-    </script>
+    <h1>About Us</h1>
+    <p>
+        TECHSPO Johannesburg 2023 is your chance to ...
+    </p>
+    <p>
+        - Check out exhibitors showcasing the next generation of technology & innovation.
+        - Be inspired, amazed and educated on how these evolving technologies will impact your business for greater growth.
+        - Interact with technology enthusiasts, build your network and reunite with your peers.
+    </p>
+    <p>
+        The 6th annual TECHSPO Johannesburg, two-day technology expo returns October 19th and 20th, 2023 to the luxurious Hilton Sandton Hotel in Johannesburg, South Africa.
+    </p>
+    <p>
+        TECHSPO Johannesburg brings together some of the best developers, brands, marketers, technology providers, designers, innovators and evangelists looking to set the pace in our advanced world of technology.
+    </p>
+    <p>
+        Watch exhibitors showcase the next generation of advances in technology & innovation, including; Internet, Mobile, AdTech, MarTech, and SaaS technologies.
+    </p>
+    <p>
+        Be prepared to be inspired, amazed, and educated on how these evolving technologies will impact your business for greater growth.
+    </p>
+    <p>
+        As part of TECHSPO Johannesburg is a limited attendance event, DigiMarCon South Africa 2023 Digital Marketing, Media and Advertising Conference
+        (<a href="https://digimarconsouthafrica.co.za">https://digimarconsouthafrica.co.za</a>).
+    </p>
+    <p>
+        If the conference is where the learning, theory, and inspiration happens, then the TECHSPO floor is where the testing, networking, and product interaction takes place.
+    </p>
 </body>
 </html>
