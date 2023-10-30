@@ -1,4 +1,11 @@
-﻿@model IEnumerable<EmsWebApplication.Models.Event>
+﻿<section class="header-section">
+    <div class="header-container">
+        <h1 class="header-title">Upcoming Events</h1>
+        <p class="header-description">Explore our exciting lineup of events</p>
+    </div>
+</section>
+
+@model IEnumerable<EmsWebApplication.Models.Event>
 
 @{
     ViewBag.Title = "Index";
@@ -6,7 +13,7 @@
 
 
 <canvas></canvas>
-<h2 style="text-decoration-color: white;">Events</h2>
+
 
 <div class="card-container">
     @foreach (var item in Model)
@@ -40,18 +47,14 @@
                 @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "link" })
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "link" })
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "link" })
+                @Html.ActionLink("Create New", "Create", new { id = item.Id }, new { @class = "link" })
             }
             @Html.ActionLink("Buy Tickets", "BuyTickets", new { eventId = item.Id }, new { @class = "link" })
         </div>
     }
 </div>
 
-<p>
-    @if (User.Identity.Name == "Admin@test.com")
-    {
-        @Html.ActionLink("Create New", "Create")
-    }
-</p>
+
 
 <style>
     .card-container {
@@ -218,6 +221,27 @@
         .demo:hover {
             opacity: 1;
         }
+    .header-section {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 30px 0;
+        text-align: center;
+    }
+
+    .header-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .header-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .header-description {
+        font-size: 1.2rem;
+        color: #666;
+    }
 </style>
 
 <section>
