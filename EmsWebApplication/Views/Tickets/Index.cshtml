@@ -25,6 +25,11 @@
 
         <!-- Button to add one ticket to the cart -->
         <button class="addToCartButton" data-ticket-id="@item.TicketId" data-event-name="@item.Event.EventName" data-event-price="@item.Event.EventPrice" data-quantity="1">Add to Cart</button>
+        @if (User.Identity.Name == "Admin@test.com")
+        {
+            <!-- Delete button for admin -->
+            @Html.ActionLink("Delete", "Delete", new { id = item.TicketId })
+        }
     </div>
 }
 
