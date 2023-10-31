@@ -16,6 +16,8 @@ namespace EmsWebApplication.Controllers
     public class TicketsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private EmsWebApplicationDbEntities5 dbContext = new EmsWebApplicationDbEntities5(); // Renamed the variable to 'dbContext'
+
 
         // GET: Tickets
         public ActionResult Index()
@@ -49,17 +51,24 @@ namespace EmsWebApplication.Controllers
         // POST: Tickets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Tickets/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TicketId,EventId,UserId,PurchaseDate,Quantity,OriginalPrice,Discount,TotalPrice")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
+                // Add the new ticket to the database
                 db.Tickets.Add(ticket);
                 db.SaveChanges();
+
+                // Optionally, you can add a success message to TempData
+                TempData["SuccessMessage"] = "Ticket added successfully.";
+
                 return RedirectToAction("Index");
             }
 
+            // If the ModelState is not valid, return to the create view with the model
             ViewBag.EventId = new SelectList(db.Events, "Id", "EventName", ticket.EventId);
             return View(ticket);
         }
@@ -139,14 +148,27 @@ namespace EmsWebApplication.Controllers
 
         public ActionResult Checkout()
         {
-            var checkoutViewModel = new CheckoutViewModel
+            using (var context = new EmsWebApplicationDbEntities5())
             {
-                CartItems = GetCartItemsFromSession(), // Correctly assign cart items
-                                                       // Other properties for the checkoutViewModel
-            };
+                // Logic for populating the database with dummy data
+                Group newGroup = new Group
+                {
+                    GroupSize = 5, // Add your desired values here
+                    DiscountPercentage = 10,
+                    Coupon = "SOME_COUPON",
+                    PromotionDiscount = 50,
+                    Total = 100,
+                    TotalAfterDiscount = 50
+                };
 
-            return View(checkoutViewModel);
+                // Add the new group to the database
+                context.Groups.Add(newGroup);
+                context.SaveChanges();
+            }
+
+            return View("Confirmation"); // Show the confirmation view
         }
+
 
 
 
@@ -183,6 +205,34 @@ namespace EmsWebApplication.Controllers
 
             return new List<CartItemViewModel>();
         }
+        public ActionResult PopulateGroups()
+        {
+            try
+            {
+                var groups = new List<Group>
+            {
+                new Group { GroupSize = 5, DiscountPercentage = 10, Coupon = "ABC123", PromotionDiscount = 20, Total = 100, TotalAfterDiscount = 80 },
+                new Group { GroupSize = 3, DiscountPercentage = 5, Coupon = "DEF456", PromotionDiscount = 10, Total = 50, TotalAfterDiscount = 45 },
+                // Add more dummy records as needed
+            };
+
+                foreach (var group in groups)
+                {
+                    dbContext.Groups.Add(group);
+                }
+
+                dbContext.SaveChanges();
+
+                return RedirectToAction("Index", "Groups"); // Redirect to the Groups index page
+            }
+            catch (Exception)
+            {
+                // Handle any exceptions that occur during the population process
+                // You can log the exception or show an error message
+                return View("Error");
+            }
+        }
+
     }
 }
 
