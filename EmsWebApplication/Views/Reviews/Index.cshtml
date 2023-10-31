@@ -6,14 +6,12 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Reviews</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .checked {
-            color: orange;
-        }
         /* 4IR Theme */
         body {
             font-family: 'Times New Roman';
@@ -36,11 +34,12 @@
             margin: 10px 0;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
-            font-family:
+            font-family: 'Times New Roman';
         }
 
         th {
@@ -110,12 +109,13 @@
         }
     </style>
 </head>
+
 <body>
     <img src="https://logowik.com/content/uploads/images/springboks-rugby9694.logowik.com.webp" alt="Your Logo" class="logo" />
     <h2>Reviews</h2>
-    
-        <p> @Html.ActionLink("Add a Review", "Create")</p>
-    
+
+    <p> @Html.ActionLink("Add a Review", "Create")</p>
+
     <table class="table">
         <tr>
             <th>User Review</th>
@@ -142,8 +142,6 @@
                 @*only show the links if The signed in email is Admin@test.com*@
                 @if (User.Identity.Name == "Admin@test.com")
                 {
-
-
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                         @Html.ActionLink("Details", "Details", new { id = item.Id }) |
@@ -154,4 +152,5 @@
         }
     </table>
 </body>
+
 </html>
