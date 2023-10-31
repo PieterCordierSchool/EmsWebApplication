@@ -208,7 +208,7 @@
                 <p><strong>Venue:</strong> @item.EventVenue</p>
                 <p><strong>Description:</strong> @item.EventDescription</p>
                 <p>
-                    <strong>Price:</strong> $@item.EventPrice
+                    <strong>Price:</strong> R @item.EventPrice
                     @if (item.EventPromoDateStart <= DateTime.Now && item.EventPromoDateEnd >= DateTime.Now)
                     {
                         <text><br /><strong>Discounted Price:</strong> $@(item.EventPrice * 0.8)</text>
@@ -231,12 +231,16 @@
                     @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "link" })
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "link" })
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "link" })
-                    @Html.ActionLink("Create New", "Create", new { id = item.Id }, new { @class = "link" })
                 }
                 @Html.ActionLink("Buy Tickets", "Index", "Tickets", new { eventId = item.Id }, new { @class = "link" })
             </div>
         }
     </div>
+    @if (User.Identity.Name == "Admin@test.com")
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+
 
     <section>
 

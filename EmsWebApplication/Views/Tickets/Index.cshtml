@@ -153,7 +153,8 @@
             <p><strong>Date:</strong> @item.Event.EventDate</p>
             <p><strong>Venue:</strong> @item.Event.EventVenue</p>
             <p><strong>Description:</strong> @item.Event.EventDescription</p>
-            <p><strong>Price:</strong> $<span class="event-price" data-event-price="@item.Event.EventPrice">@item.Event.EventPrice</span></p>
+            <p><strong>Price:</strong> R <span class="event-price" data-event-price="@item.Event.EventPrice">@item.Event.EventPrice</span></p>
+            <p><text><strong>Promotion Price:</strong> R @(item.Event.EventPrice * 0.8)</text></p>
 
             <!-- Button to add one ticket to the cart -->
             <button class="addToCartButton" data-ticket-id="@item.TicketId" data-event-name="@item.Event.EventName" data-event-price="@item.Event.EventPrice" data-quantity="1">Add to Cart</button>
@@ -161,11 +162,13 @@
             {
                 <!-- Delete button for admin -->
                 @Html.ActionLink("Delete", "Delete", new { id = item.TicketId })
-                <p>
-                    @Html.ActionLink("Create New", "Create")
-                </p>
+                
             }
         </div>
+    }
+    @if (User.Identity.Name == "Admin@test.com")
+    {
+        @Html.ActionLink("Create New", "Create")
     }
 
 
