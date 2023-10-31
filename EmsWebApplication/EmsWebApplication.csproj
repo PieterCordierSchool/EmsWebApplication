@@ -281,7 +281,7 @@
     <Content Include="App_Data\EmsWebApplicationDb_log.ldf">
       <DependentUpon>EmsWebApplicationDb.mdf</DependentUpon>
     </Content>
-    <Content Include="Bokke.png" />
+    <Content Include="Content\Images\Bokke.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -301,8 +301,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="icon.svg" />
-    <Content Include="LogoTECHSPO.png" />
+    <Content Include="Content\Images\icon.svg" />
+    <Content Include="Content\Images\LogoTECHSPO.png" />
     <Content Include="Models\MyModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MyModel.edmx</DependentUpon>
@@ -432,9 +432,7 @@
       <DependentUpon>202310310548487_FinalMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
