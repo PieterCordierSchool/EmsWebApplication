@@ -4,44 +4,133 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Review</title>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    <style>
+        /* 4IR Theme */
+        body {
+            font-family: 'Times New Roman';
+            background-color: #ff6a00;
+            background-image: url('https://ippr.org.na/wp-content/uploads/2021/11/106790792_l-1024x576.jpg');
+            background-size: cover; /* Adjust the image size to cover the entire element */
+            color: #333;
+        }
 
-    <div class="form-horizontal">
-        <h4>Review</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserReview, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserReview, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserReview, "", new { @class = "text-danger" })
+        h2 {
+            color: #009688; /* Teal color for the title */
+            font-family: 'Times New Roman';
+        }
+
+        .form-horizontal {
+            width: 50%;
+            margin: auto;
+            background-color: #00726a;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        label {
+            color: #fff;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #009688;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            input[type="submit"]:hover {
+                background-color: #00726a;
+            }
+
+        .text-danger {
+            color: red;
+        }
+
+        .action-link {
+            border: 1px solid #009688; /* Teal color for link borders */
+            padding: 5px 10px;
+            margin-right: 10px;
+            text-align: center;
+            display: inline-block;
+            color: #009688; /* Teal color for link text */
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+            .action-link:hover {
+                background-color: #009688; /* Teal color for link background on hover */
+                color: #fff;
+            }
+
+        .logo {
+            position: absolute;
+            top: 10px; /* Adjust the top position as needed */
+            left: 10px; /* Adjust the left position as needed */
+            width: 50px; /* Adjust the width as needed */
+            height: 50px; /* Adjust the height as needed */
+        }
+    </style>
+</head>
+<body>
+    <img src="https://logowik.com/content/uploads/images/springboks-rugby9694.logowik.com.webp" alt="Your Logo" class="logo" />
+    <h2>Create Review</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Review</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserReview, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.UserReview, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserReview, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", type = "number", min = 1, max = 5 } })
+                    @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    <input type="submit" value="Create" class="action-link" />
+                </div>
             </div>
         </div>
+    }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", type = "number", min = 1, max = 5 } })
-                @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+    <div>
+        @Html.ActionLink("Back to List", "Index", new { }, new { @class = "action-link" })
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+</body>
+</html>
