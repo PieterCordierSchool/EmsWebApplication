@@ -233,7 +233,7 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "link" })
                     @Html.ActionLink("Create New", "Create", new { id = item.Id }, new { @class = "link" })
                 }
-                @Html.ActionLink("Buy Tickets", "BuyTickets", new { eventId = item.Id }, new { @class = "link" })
+                @Html.ActionLink("Buy Tickets", "Index", "Tickets", new { eventId = item.Id }, new { @class = "link" })
             </div>
         }
     </div>
