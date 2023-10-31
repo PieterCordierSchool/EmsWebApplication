@@ -221,6 +221,10 @@
     <Compile Include="Migrations\202310180813382_ApplicationMigration.designer.cs">
       <DependentUpon>202310180813382_ApplicationMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310310548487_FinalMigration.cs" />
+    <Compile Include="Migrations\202310310548487_FinalMigration.designer.cs">
+      <DependentUpon>202310310548487_FinalMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRole.cs">
@@ -424,6 +428,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310180813382_ApplicationMigration.resx">
       <DependentUpon>202310180813382_ApplicationMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310310548487_FinalMigration.resx">
+      <DependentUpon>202310310548487_FinalMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
