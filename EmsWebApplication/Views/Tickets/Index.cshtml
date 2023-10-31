@@ -20,6 +20,10 @@
         * {
             font-family: Courier New, Courier, monospace;
         }
+        h1 {
+            text-align: center;
+            display: block;
+        }
 
         .addToCartButton {
             border-color: dimgrey;
@@ -136,7 +140,9 @@
 </head>
 <body>
 
-    <h2>Buy Your Ticket Now!</h2>
+    <h1><strong>Buy Your Ticket Now!</strong></h1>
+    <!-- Button to open the shopping cart modal -->
+    <button id="viewCartButton" class="btn btn-primary">View Cart</button>
 
     <canvas id="TicketsBackground"></canvas>
 
@@ -155,13 +161,14 @@
             {
                 <!-- Delete button for admin -->
                 @Html.ActionLink("Delete", "Delete", new { id = item.TicketId })
+                <p>
+                    @Html.ActionLink("Create New", "Create")
+                </p>
             }
         </div>
     }
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
+
 
     <!-- Button to open the shopping cart modal -->
     <button id="viewCartButton" class="btn btn-primary">View Cart</button>
