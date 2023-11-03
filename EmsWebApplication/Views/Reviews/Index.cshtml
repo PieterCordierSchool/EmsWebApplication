@@ -118,39 +118,49 @@
 
     <p> @Html.ActionLink("Add a Review", "Create")</p>
 
+
+
+    <!-- Filter mechanism -->
+    <form method="get" action="@Url.Action("Index")">
+        <label for="starFilter">Filter by stars:</label>
+        <select name="starFilter" id="starFilter">
+            <option value="">All</option>
+            <option value="1">1 star</option>
+            <option value="2">2 stars</option>
+            <option value="3">3 stars</option>
+            <option value="4">4 stars</option>
+            <option value="5">5 stars</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
     <table class="table">
         <tr>
             <th>User Review</th>
             <th>Rating</th>
-            
         </tr>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.UserReview)</td>
-                <td>
-                    @for (int i = 1; i <= 5; i++)
-                    {
-                        if (i <= item.Rating)
-                        {
-                            <span class="fa fa-star checked"></span>
-                        }
-                        else
-                        {
-                            <span class="fa fa-star"></span>
-                        }
-                    }
-                </td>
-                @*only show the links if The signed in email is Admin@test.com*@
-                @if (User.Identity.Name == "Admin@test.com")
-                {
+            var starFilter = Request.QueryString["starFilter"];
+            if (string.IsNullOrEmpty(starFilter) || item.Rating.ToString() == starFilter)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.UserReview)</td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id.ToString() })
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= item.Rating)
+                            {
+                                <span class="fa fa-star checked"></span>
+                            }
+                            else
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
                     </td>
-                }
-            </tr>
+                </tr>
+            }
         }
     </table>
 </body>
